@@ -304,6 +304,7 @@ export const lex = function (this: Mexp, inp: string, tokens?: Token[]) {
       }
       // bracToClose++
     } else if (cType === tokenTypes.NUMBER) {
+      // console.log("wow", ptc, cEv, pre)
       if (pre.type === tokenTypes.NUMBER) {
         pre.value += cEv;
         inc(ptc, 1);
@@ -351,7 +352,7 @@ export const lex = function (this: Mexp, inp: string, tokens?: Token[]) {
           precedence: 0,
         }; // pre needs to be changed as it will the last value now to be safe in later code
         str.push(pre);
-        // inc(ptc, 1)
+        inc(ptc, -1)
       }
       allowed = type6;
       inc(ptc, 1);
@@ -399,7 +400,8 @@ export const lex = function (this: Mexp, inp: string, tokens?: Token[]) {
           // don't add with the above if statement as that will run the else statement of parent if on Ctoken +
           allowed = type0;
           asterick = empty;
-          inc(ptc, 1).push(2);
+          inc(ptc, 1);
+          ptc.push(2);
           str.push(changeSignObj);
           str.push(openingParObj);
         }
@@ -435,6 +437,7 @@ export const lex = function (this: Mexp, inp: string, tokens?: Token[]) {
 
     inc(ptc, -1);
     prevKey = cToken;
+    // console.log(cToken, ptc)
   }
   for (j = ptc.length; j--; ) {
     // loop over ptc
@@ -448,5 +451,6 @@ export const lex = function (this: Mexp, inp: string, tokens?: Token[]) {
   }
 
   str.push(closingParObj);
+  // console.log(str)
   return str;
 };
